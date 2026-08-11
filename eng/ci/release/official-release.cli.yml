@@ -8,6 +8,10 @@ resources:
     type: git
     name: engineering
     ref: refs/tags/release
+  - repository: functionsRelease
+    type: git
+    name: functions-release
+    ref: refs/heads/main
 
 variables:
 - template: /ci/variables/cfs.yml@eng
@@ -56,3 +60,11 @@ extends:
       - template: /eng/ci/templates/jobs/stage-cli-artifacts.yml@self
         parameters:
           sign: true
+
+    - stage: PublishCdn
+      displayName: Publish CLI to CDN
+      dependsOn: Release
+      jobs:
+      - template: /templates/core-tools/upload-v5-cli-to-cdn.yml@functionsRelease
+        parameters:
+          version: $(Build.BuildNumber)
