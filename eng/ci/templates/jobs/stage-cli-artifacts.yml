@@ -5,6 +5,9 @@ parameters:
 - name: sign
   type: boolean
   default: false
+- name: macosBundleId
+  type: string
+  default: com.microsoft.azure.functions.cli
 - name: runtimes
   type: object
   default:
@@ -89,6 +92,7 @@ jobs:
           platform: macos
           folderPath: $(drop_path)/_macsign
           signPatterns: 'osx-*.zip'
+          macosBundleId: ${{ parameters.macosBundleId }}
 
       - pwsh: |
           $ErrorActionPreference = 'Stop'
